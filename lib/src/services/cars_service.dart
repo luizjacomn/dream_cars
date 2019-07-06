@@ -1,13 +1,19 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:dream_cars/src/model/car.dart';
+import 'package:http/http.dart' as http;
 
 class CarsService {
-  static List<Car> getCars() {
-    var imgUrl =
-        'http://www.livroandroid.com.br/livro/carros/classicos/Ford_Mustang.png';
-    var imgUrl2 =
-        'https://robbreportedit.files.wordpress.com/2018/02/13.jpg?w=1024';
-    return List.generate(2, (index) {
-      return Car('Ferrari - ${index + 1}', imgUrl);
-    });
+  static Future<List<Car>> getCars() async {
+    final url = "http://livrowebservices.com.br/rest/carros";
+    print("> get: $url");
+
+    final response = await http.get(url);
+
+//    print("< : ${response.body}");
+
+    final mapCarros = json.decode(response.body).cast<Map<String, dynamic>>();
+
+    return mapCarros.map<Car>((json) => Car.fromJson(json)).toList();
   }
 }

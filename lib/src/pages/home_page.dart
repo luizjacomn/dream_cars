@@ -1,3 +1,4 @@
+import 'package:dream_cars/src/model/car.dart';
 import 'package:dream_cars/src/services/cars_service.dart';
 import 'package:flutter/material.dart';
 
@@ -8,15 +9,34 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Cars'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: _listView(),
+      body: _body(),
+    );
+  }
+
+  _body() {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: FutureBuilder(
+        future: CarsService.getCars(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData)
+            return Center(child: CircularProgressIndicator());
+          if (snapshot.hasError)
+            return Center(
+                child: Text(
+              'Erro ao buscar dados.',
+              style: TextStyle(
+                color: Colors.black45,
+                fontSize: 20,
+              ),
+            ));
+          return _listView(snapshot.data);
+        },
       ),
     );
   }
 
-  _listView() {
-    final cars = CarsService.getCars();
+  _listView(List<Car> cars) {
     return ListView.builder(
       itemCount: cars.length,
       itemBuilder: (BuildContext context, int index) {
@@ -30,6 +50,8 @@ class HomePage extends StatelessWidget {
                   Center(child: Image.network(cars[index].imgUrl)),
                   Text(
                     cars[index].name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 24,
