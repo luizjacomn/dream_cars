@@ -21,39 +21,37 @@ class HomePage extends StatelessWidget {
       itemCount: cars.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
-          height: 250,
           child: Card(
             child: Column(
               children: <Widget>[
-                Expanded(
-                  flex: 8,
-                  child: Image.network(cars[index].imgUrl),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                    color: Colors.grey,
-                    child: Center(
-                      child: Text(
-                        cars[index].name,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600,
+                Stack(
+                  alignment: Alignment.topCenter,
+                  children: <Widget>[
+                    Image.network(cars[index].imgUrl),
+                    Container(
+                      color: Colors.black45,
+                      child: Center(
+                        child: Text(
+                          cars[index].name,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
                 ButtonTheme.bar(
                   child: ButtonBar(
                     children: <Widget>[
                       FlatButton(
-                        child: const Text('BUY TICKETS'),
+                        child: const Text('DETAILS'),
                         onPressed: () {/* ... */},
                       ),
                       FlatButton(
-                        child: const Text('LISTEN'),
+                        child: const Text('SHARE'),
                         onPressed: () {/* ... */},
                       ),
                     ],
