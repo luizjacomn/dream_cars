@@ -1,12 +1,20 @@
 import 'package:dream_cars/src/services/login_service.dart';
 import 'package:dream_cars/src/utils/alerts.dart';
-import 'package:dream_cars/src/utils/response.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final _userController = TextEditingController(text: 'lj@lj.com');
+
   final _passwordController = TextEditingController(text: '123456');
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  bool _progress = false;
 
   @override
   Widget build(BuildContext context) {
@@ -52,10 +60,14 @@ class LoginPage extends StatelessWidget {
             height: 50,
             child: RaisedButton(
               color: Theme.of(context).primaryColor,
-              child: Text(
-                'Login'.toUpperCase(),
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
+              child: _progress
+                  ? CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation(Colors.white),
+                    )
+                  : Text(
+                      'Login'.toUpperCase(),
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
               onPressed: () => _onClickLogin(context),
             ),
           ),
@@ -80,6 +92,10 @@ class LoginPage extends StatelessWidget {
   Future _onClickLogin(BuildContext context) async {
     if (!_formKey.currentState.validate()) return;
 
+    setState(() {
+      _progress = true;
+    });
+
     final response = await LoginService.login(
         _userController.text, _passwordController.text);
 
@@ -88,5 +104,9 @@ class LoginPage extends StatelessWidget {
     } else {
       alert(context, 'Error', response.message);
     }
+
+    setState(() {
+      _progress = false;
+    });
   }
 }
