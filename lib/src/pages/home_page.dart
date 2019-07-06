@@ -21,20 +21,27 @@ class HomePage extends StatelessWidget {
       itemCount: cars.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
-          height: 130,
+          height: 250,
           child: Card(
             child: Column(
               children: <Widget>[
-                ListTile(
-                  leading: Image.network(
-                    cars[index].imgUrl,
-                    width: 120,
-                  ),
-                  title: Text(
-                    cars[index].name,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
+                Expanded(
+                  flex: 8,
+                  child: Image.network(cars[index].imgUrl),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    color: Colors.grey,
+                    child: Center(
+                      child: Text(
+                        cars[index].name,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                   ),
                 ),
