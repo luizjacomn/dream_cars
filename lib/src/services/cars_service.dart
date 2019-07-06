@@ -7,7 +7,7 @@ class CarsService {
     var imgUrl2 =
         'https://robbreportedit.files.wordpress.com/2018/02/13.jpg?w=1024';
     return List.generate(2, (index) {
-      return Car('Ferrari - ${index + 1}', imgUrl2);
+      return Car('Ferrari - ${index + 1}', imgUrl);
     });
   }
 }

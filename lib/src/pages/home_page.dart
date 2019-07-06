@@ -22,42 +22,44 @@ class HomePage extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         return Container(
           child: Card(
-            child: Column(
-              children: <Widget>[
-                Stack(
-                  alignment: Alignment.topCenter,
-                  children: <Widget>[
-                    Image.network(cars[index].imgUrl),
-                    Container(
-                      color: Colors.black45,
-                      child: Center(
-                        child: Text(
-                          cars[index].name,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Center(child: Image.network(cars[index].imgUrl)),
+                  Text(
+                    cars[index].name,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w700,
                     ),
-                  ],
-                ),
-                ButtonTheme.bar(
-                  child: ButtonBar(
-                    children: <Widget>[
-                      FlatButton(
-                        child: const Text('DETAILS'),
-                        onPressed: () {/* ... */},
-                      ),
-                      FlatButton(
-                        child: const Text('SHARE'),
-                        onPressed: () {/* ... */},
-                      ),
-                    ],
                   ),
-                ),
-              ],
+                  Text(
+                    cars[index].name,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  ButtonTheme.bar(
+                    child: ButtonBar(
+                      children: <Widget>[
+                        FlatButton(
+                          child: const Text('DETAILS'),
+                          onPressed: () {/* ... */},
+                        ),
+                        FlatButton(
+                          child: const Text('SHARE'),
+                          onPressed: () {/* ... */},
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );
