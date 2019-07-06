@@ -6,6 +6,11 @@ Future push(BuildContext context, Widget page) {
       context, CupertinoPageRoute(builder: (context) => page));
 }
 
+Future pushReplacement(BuildContext context, Widget page) {
+  return Navigator.pushReplacement(
+      context, CupertinoPageRoute(builder: (context) => page));
+}
+
 bool pop(BuildContext context, {toReturn}) {
   return Navigator.pop(context, toReturn);
 }

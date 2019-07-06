@@ -1,5 +1,7 @@
+import 'package:dream_cars/src/pages/home_page.dart';
 import 'package:dream_cars/src/services/login_service.dart';
 import 'package:dream_cars/src/utils/alerts.dart';
+import 'package:dream_cars/src/utils/nav.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -101,12 +103,12 @@ class _LoginPageState extends State<LoginPage> {
 
     if (response.isOk()) {
       print(response.message);
+      pushReplacement(context, HomePage());
     } else {
       alert(context, 'Error', response.message);
+      setState(() {
+        _progress = false;
+      });
     }
-
-    setState(() {
-      _progress = false;
-    });
   }
 }
