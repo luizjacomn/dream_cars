@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:dream_cars/src/model/car.dart';
 import 'package:dream_cars/src/services/cars_service.dart';
 import 'package:dream_cars/src/utils/alerts.dart';
 import 'package:dream_cars/src/utils/nav.dart';
+import 'package:dream_cars/src/widgets/image_source_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CarFormPage extends StatefulWidget {
   final Car car;
@@ -24,7 +28,9 @@ class _CarFormPageState extends State<CarFormPage> {
 
   var _showProgress = false;
 
-  get car => widget.car;
+  File imageFile;
+
+  Car get car => widget.car;
 
   String _validateNome(String value) {
     if (value.isEmpty) {
@@ -137,13 +143,26 @@ class _CarFormPageState extends State<CarFormPage> {
   }
 
   _headerImage() {
-    return car != null && car.imgUrl != null
-        ? Hero(tag: 'img-${car.id}', child: Image.network(car.imgUrl))
-        : Icon(
-            Icons.camera_enhance,
-            size: 100,
-            color: Colors.grey,
-          );
+    if (imageFile != null) {
+      return InkWell(
+        onTap: _onClickImage,
+        child: Image.file(
+          imageFile,
+          height: 150,
+        ),
+      );
+    } else {
+      return InkWell(
+        onTap: _onClickImage,
+        child: car != null && car.imgUrl != null
+            ? Hero(tag: 'img-${car.id}', child: Image.network(car.imgUrl))
+            : Icon(
+                Icons.camera_enhance,
+                size: 100,
+                color: Colors.grey,
+              ),
+      );
+    }
   }
 
   _radioType() {
@@ -163,15 +182,14 @@ class _CarFormPageState extends State<CarFormPage> {
     return Row(
       children: <Widget>[
         Radio(
-            value: value,
-            groupValue: _radioIndex,
-            onChanged: _onClickType,
-          ),
-          Text(
-            label,
-            style:
-                TextStyle(color: Theme.of(context).primaryColor, fontSize: 15),
-          ),
+          value: value,
+          groupValue: _radioIndex,
+          onChanged: _onClickType,
+        ),
+        Text(
+          label,
+          style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15),
+        ),
       ],
     );
   }
@@ -229,5 +247,19 @@ class _CarFormPageState extends State<CarFormPage> {
     setState(() {
       _showProgress = false;
     });
+  }
+
+  void _onClickImage() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => ImageSourceSheet(
+            onImageSelected: (img) {
+              setState(() {
+                imageFile = img;
+              });
+              Navigator.of(context).pop();
+            },
+          ),
+    );
   }
 }
