@@ -1,91 +1,55 @@
 import 'package:dream_cars/src/model/car.dart';
-import 'package:dream_cars/src/services/cars_service.dart';
+import 'package:dream_cars/src/utils/prefs.dart';
+import 'package:dream_cars/src/widgets/cars_list_view.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin<HomePage> {
+  TabController tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(length: 3, vsync: this);
+
+    Prefs.getInt('tabIndex').then((index) {
+      tabController.index = index;
+    });
+
+    tabController.addListener(() {
+      Prefs.setInt('tabIndex', tabController.index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       appBar: AppBar(
         title: Text('Cars'),
+        bottom: TabBar(
+          controller: tabController,
+          tabs: <Widget>[
+            Tab(text: 'Classics', icon: Icon(Icons.directions_car)),
+            Tab(text: 'Sports', icon: Icon(Icons.directions_car)),
+            Tab(text: 'Luxs', icon: Icon(Icons.directions_car)),
+          ],
+        ),
       ),
-      body: _body(),
-    );
-  }
-
-  _body() {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: FutureBuilder(
-        future: CarsService.getCars(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData)
-            return Center(child: CircularProgressIndicator());
-          if (snapshot.hasError)
-            return Center(
-                child: Text(
-              'Erro ao buscar dados.',
-              style: TextStyle(
-                color: Colors.black45,
-                fontSize: 20,
-              ),
-            ));
-          return _listView(snapshot.data);
-        },
+      body: TabBarView(
+        controller: tabController,
+        children: <Widget>[
+          CarsListView(type: CarType.classics),
+          CarsListView(type: CarType.sports),
+          CarsListView(type: CarType.luxs),
+        ],
       ),
-    );
-  }
-
-  _listView(List<Car> cars) {
-    return ListView.builder(
-      itemCount: cars.length,
-      itemBuilder: (BuildContext context, int index) {
-        return Container(
-          child: Card(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Center(child: Image.network(cars[index].imgUrl)),
-                  Text(
-                    cars[index].name,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  Text(
-                    cars[index].name,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  ButtonTheme.bar(
-                    child: ButtonBar(
-                      children: <Widget>[
-                        FlatButton(
-                          child: const Text('DETAILS'),
-                          onPressed: () {/* ... */},
-                        ),
-                        FlatButton(
-                          child: const Text('SHARE'),
-                          onPressed: () {/* ... */},
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
     );
   }
 }

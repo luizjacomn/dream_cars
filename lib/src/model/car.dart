@@ -1,3 +1,9 @@
+class CarType {
+  static const String classics = 'classicos';
+  static const String sports = 'esportivos';
+  static const String luxs = 'luxo';
+}
+
 class Car {
   final int id;
   String type;
