@@ -1,8 +1,8 @@
 import 'package:dream_cars/src/model/car.dart';
+import 'package:dream_cars/src/pages/cars_page.dart';
+import 'package:dream_cars/src/pages/favorites_page.dart';
 import 'package:dream_cars/src/utils/prefs.dart';
-import 'package:dream_cars/src/widgets/cars_list_view.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     super.initState();
-    tabController = TabController(length: 3, vsync: this);
+    tabController = TabController(length: 4, vsync: this);
 
     Prefs.getInt('tabIndex').then((index) {
       tabController.index = index;
@@ -39,15 +39,17 @@ class _HomePageState extends State<HomePage>
             Tab(text: 'Classics', icon: Icon(Icons.directions_car)),
             Tab(text: 'Sports', icon: Icon(Icons.directions_car)),
             Tab(text: 'Luxs', icon: Icon(Icons.directions_car)),
+            Tab(text: 'Favorites', icon: Icon(Icons.favorite)),
           ],
         ),
       ),
       body: TabBarView(
         controller: tabController,
         children: <Widget>[
-          CarsListView(type: CarType.classics),
-          CarsListView(type: CarType.sports),
-          CarsListView(type: CarType.luxs),
+          CarsPage(type: CarType.classics),
+          CarsPage(type: CarType.sports),
+          CarsPage(type: CarType.luxs),
+          FavoritesPage(),
         ],
       ),
     );

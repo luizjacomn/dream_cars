@@ -28,7 +28,7 @@ class CarDB {
     print("db $path");
 
     // para testes vc pode deletar o banco
-    //await deleteDatabase(path);
+    await deleteDatabase(path);
 
     var db = await openDatabase(path, version: 1, onCreate: _onCreate);
     return db;
@@ -36,14 +36,14 @@ class CarDB {
 
   void _onCreate(Database db, int newVersion) async {
     await db
-        .execute('CREATE TABLE car(id INTEGER PRIMARY KEY, name TEXT, type TEXT'
-            ', desc TEXT, imgUrl TEXT, urlVideo TEXT, lat TEXT, lng TEXT)');
+        .execute('CREATE TABLE car(id INTEGER PRIMARY KEY, nome TEXT, tipo TEXT, '
+            'desc TEXT, urlFoto TEXT, urlVideo TEXT, lat TEXT, lng TEXT)');
   }
 
   Future<int> save(Car car) async {
     var dbClient = await db;
     final sql =
-        'insert or replace into Car (id, name ,type ,desc ,imgUrl ,urlVideo ,lat ,lng ) VALUES '
+        'insert or replace into car (id, nome, tipo, desc, urlFoto, urlVideo, lat, lng) VALUES '
         '(?, ?, ?, ?, ?, ?, ?, ?)';
     print(sql);
     var id = await dbClient.rawInsert(sql, [
@@ -56,7 +56,6 @@ class CarDB {
       car.latitude,
       car.longitude
     ]);
-    print('id: $id');
     return id;
   }
 
@@ -65,9 +64,7 @@ class CarDB {
 
     final mapCars = await dbClient.rawQuery('select * from Car');
 
-    final cars = mapCars.map<Car>((json) => Car.fromJson(json)).toList();
-
-    return cars;
+    return mapCars.map<Car>((json) => Car.fromJson(json)).toList();
   }
 
   Future<int> getCount() async {

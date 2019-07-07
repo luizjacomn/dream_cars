@@ -69,10 +69,16 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
       children: <Widget>[
         Hero(
           tag: 'img-${car.id}',
-          child: Image.network(
-            car.imgUrl,
-            fit: BoxFit.cover,
-          ),
+          child: car.imgUrl == null || car.imgUrl.isEmpty
+              ? Icon(
+                  Icons.broken_image,
+                  size: 100,
+                  color: Colors.grey,
+                )
+              : Image.network(
+                  car.imgUrl,
+                  fit: BoxFit.cover,
+                ),
         ),
         block1(),
         block2(),

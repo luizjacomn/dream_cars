@@ -1,45 +1,16 @@
 import 'package:dream_cars/src/model/car.dart';
 import 'package:dream_cars/src/pages/car_details_page.dart';
-import 'package:dream_cars/src/services/cars_service.dart';
 import 'package:dream_cars/src/utils/nav.dart';
 import 'package:flutter/material.dart';
 
-class CarsListView extends StatefulWidget {
-  final String type;
+class CarsListView extends StatelessWidget {
+final List<Car> cars;
 
-  const CarsListView({this.type});
-
-  @override
-  _CarsListViewState createState() => _CarsListViewState();
-}
-
-class _CarsListViewState extends State<CarsListView>
-    with AutomaticKeepAliveClientMixin<CarsListView> {
-  @override
-  bool get wantKeepAlive => true;
+  const CarsListView(this.cars);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: FutureBuilder(
-        future: CarsService.getCars(widget.type),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData)
-            return Center(child: CircularProgressIndicator());
-          if (snapshot.hasError)
-            return Center(
-                child: Text(
-              'Erro ao buscar dados.',
-              style: TextStyle(
-                color: Colors.black45,
-                fontSize: 20,
-              ),
-            ));
-          return _listView(snapshot.data);
-        },
-      ),
-    );
+    return _listView(cars);
   }
 
   _listView(List<Car> cars) {
