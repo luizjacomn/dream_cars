@@ -28,7 +28,7 @@ class CarDB {
     print("db $path");
 
     // para testes vc pode deletar o banco
-    await deleteDatabase(path);
+    // await deleteDatabase(path);
 
     var db = await openDatabase(path, version: 1, onCreate: _onCreate);
     return db;

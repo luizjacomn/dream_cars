@@ -1,20 +1,50 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:dream_cars/src/db/car_db.dart';
 import 'package:dream_cars/src/model/car.dart';
+import 'package:dream_cars/src/utils/response.dart';
 import 'package:http/http.dart' as http;
 
 class CarsService {
   static Future<List<Car>> getCars(String type) async {
     final url = "http://livrowebservices.com.br/rest/carros/tipo/$type";
-    // print("> get: $url");
 
     final response = await http.get(url);
-
-//    print("< : ${response.body}");
 
     final mapCarros = json.decode(response.body).cast<Map<String, dynamic>>();
 
     return mapCarros.map<Car>((json) => Car.fromJson(json)).toList();
+  }
+
+  static Future<Response> save(Car car) async {
+    final url = "http://livrowebservices.com.br/rest/carros";
+
+    final headers = {"Content-Type": "application/json"};
+    final body = json.encode(car.toMap());
+
+    final response = await http.post(url, headers: headers, body: body);
+
+    final db = CarDB.getInstance();
+    bool exists = await db.exists(car);
+    if (exists) {
+      db.save(car);
+    }
+
+    return Response.fromJson(json.decode(response.body));
+  }
+
+  static delete(Car car) async {
+    final url = "http://livrowebservices.com.br/rest/carros/${car.id}";
+
+    final response = await http.delete(url);
+
+    final db = CarDB.getInstance();
+    bool exists = await db.exists(car);
+    if (exists) {
+      db.delete(car.id);
+    }
+
+    return Response.fromJson(json.decode(response.body));
   }
 
   static Future<String> getLoremIpsum() async {

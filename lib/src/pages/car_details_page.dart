@@ -1,6 +1,9 @@
 import 'package:dream_cars/src/db/car_db.dart';
 import 'package:dream_cars/src/model/car.dart';
+import 'package:dream_cars/src/pages/car_form_page.dart';
 import 'package:dream_cars/src/services/cars_service.dart';
+import 'package:dream_cars/src/utils/alerts.dart';
+import 'package:dream_cars/src/utils/nav.dart';
 import 'package:flutter/material.dart';
 
 class CarDetailsPage extends StatefulWidget {
@@ -12,7 +15,7 @@ class CarDetailsPage extends StatefulWidget {
 }
 
 class _CarDetailsPageState extends State<CarDetailsPage> {
-  get car => widget.car;
+  Car get car => widget.car;
 
   bool isFav = false;
 
@@ -42,13 +45,17 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
             onPressed: () {},
           ),
           PopupMenuButton<String>(
-            onSelected: (option) {},
+            onSelected: (option) {
+              _onClickOption(option);
+            },
             itemBuilder: (context) {
               return [
                 PopupMenuItem(
+                  value: 'edit',
                   child: Text('Edit'),
                 ),
                 PopupMenuItem(
+                  value: 'delete',
                   child: Text('Delete'),
                 ),
                 PopupMenuItem(
@@ -175,5 +182,27 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
     setState(() {
       isFav = !exists;
     });
+  }
+
+  void _onClickOption(String option) {
+    switch (option) {
+      case 'edit':
+        push(context, CarFormPage(car: car));
+        break;
+      case 'delete':
+        _deletar();
+        break;
+      default:
+        break;
+    }
+  }
+
+  Future _deletar() async {
+    final response = await CarsService.delete(car);
+    if (response.isOk()) {
+      pop(context);
+    } else {
+      alert(context, "Error", response.message);
+    }
   }
 }

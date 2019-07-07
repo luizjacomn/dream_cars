@@ -1,6 +1,8 @@
 import 'package:dream_cars/src/model/car.dart';
+import 'package:dream_cars/src/pages/car_form_page.dart';
 import 'package:dream_cars/src/pages/cars_page.dart';
 import 'package:dream_cars/src/pages/favorites_page.dart';
+import 'package:dream_cars/src/utils/nav.dart';
 import 'package:dream_cars/src/utils/prefs.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +34,7 @@ class _HomePageState extends State<HomePage>
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
-        title: Text('Cars'),
+        title: Text('Dream Cars'),
         bottom: TabBar(
           controller: tabController,
           tabs: <Widget>[
@@ -51,6 +53,13 @@ class _HomePageState extends State<HomePage>
           CarsPage(type: CarType.luxs),
           FavoritesPage(),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        heroTag: 'pick-img',
+        child: Icon(Icons.add),
+        onPressed: () {
+          push(context, CarFormPage());
+        },
       ),
     );
   }
