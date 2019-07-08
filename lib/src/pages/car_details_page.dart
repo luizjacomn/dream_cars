@@ -24,9 +24,11 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
     super.initState();
 
     CarDB.getInstance().exists(car).then((exists) {
-      setState(() {
+      if(exists) {
+        setState(() {
         isFav = exists;
       });
+      }
     });
   }
 
