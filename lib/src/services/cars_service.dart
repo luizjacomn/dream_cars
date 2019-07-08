@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
+
 import 'package:dream_cars/src/db/car_db.dart';
 import 'package:dream_cars/src/model/car.dart';
 import 'package:dream_cars/src/utils/response.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
 
 class CarsService {
   static Future<List<Car>> getCars(String type) async {
@@ -16,7 +19,12 @@ class CarsService {
     return mapCarros.map<Car>((json) => Car.fromJson(json)).toList();
   }
 
-  static Future<Response> save(Car car) async {
+  static Future<Response> save(Car car, File file) async {
+    if (file != null) {
+      final uploadImage = await upload(file);
+      car.imgUrl = uploadImage.url;
+    }
+
     final url = "http://livrowebservices.com.br/rest/carros";
 
     final headers = {"Content-Type": "application/json"};
@@ -45,6 +53,26 @@ class CarsService {
     }
 
     return Response.fromJson(json.decode(response.body));
+  }
+
+  static Future<Response> upload(File file) async {
+    final url = "http://livrowebservices.com.br/rest/carros/postFotoBase64";
+
+    List<int> imageBytes = file.readAsBytesSync();
+    String base64Image = base64Encode(imageBytes);
+
+    String fileName = path.basename(file.path);
+
+    var body = {"fileName": fileName, "base64": base64Image};
+    print("http.upload >> " + body.toString());
+
+    final response = await http.post(url, body: body);
+
+    print("http.upload << " + response.body);
+
+    Map<String, dynamic> map = json.decode(response.body);
+
+    return Response.fromJson(map);
   }
 
   static Future<String> getLoremIpsum() async {

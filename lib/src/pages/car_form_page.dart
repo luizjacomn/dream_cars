@@ -7,7 +7,6 @@ import 'package:dream_cars/src/utils/nav.dart';
 import 'package:dream_cars/src/widgets/image_source_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 class CarFormPage extends StatefulWidget {
   final Car car;
@@ -93,6 +92,7 @@ class _CarFormPageState extends State<CarFormPage> {
           TextFormField(
             controller: _nameController,
             keyboardType: TextInputType.text,
+            textCapitalization: TextCapitalization.words,
             validator: _validateNome,
             style:
                 TextStyle(color: Theme.of(context).primaryColor, fontSize: 20),
@@ -104,6 +104,7 @@ class _CarFormPageState extends State<CarFormPage> {
           TextFormField(
             controller: _descController,
             keyboardType: TextInputType.text,
+            textCapitalization: TextCapitalization.sentences,
             style: TextStyle(
               color: Theme.of(context).primaryColor,
               fontSize: 20,
@@ -236,7 +237,7 @@ class _CarFormPageState extends State<CarFormPage> {
       _showProgress = true;
     });
 
-    final response = await CarsService.save(c);
+    final response = await CarsService.save(c, imageFile);
     if (response.isOk()) {
       alert(context, "Car saved", response.message,
           callback: () => pop(context));

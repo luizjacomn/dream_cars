@@ -10,17 +10,7 @@ class ImageSourceSheet extends StatelessWidget {
 
   Future<void> _handleImage(BuildContext context, ImageSource source) async {
     File image = await ImagePicker.pickImage(source: source);
-    // if (image != null) {
-    //   File croppedImage = await ImageCropper.cropImage(
-    //     sourcePath: image.path,
-    //     ratioX: 1.0,
-    //     ratioY: 1.0,
-    //     toolbarColor: Theme.of(context).primaryColor,
-    //     toolbarWidgetColor: Colors.blueGrey.shade900,
-    //     toolbarTitle: 'Cut image',
-    //   );
-      onImageSelected(image);
-    // }
+    onImageSelected(image);
   }
 
   @override
@@ -33,14 +23,29 @@ class ImageSourceSheet extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             FlatButton(
-              child: Text(
-                'Camera'.toUpperCase(),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(Icons.camera_alt),
+                  SizedBox(width: 5),
+                  Text(
+                    'Camera'.toUpperCase(),
+                  ),
+                ],
               ),
               onPressed: () => _handleImage(context, ImageSource.camera),
             ),
             FlatButton(
-              child: Text(
-                'Gallery'.toUpperCase(),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+
+                children: <Widget>[
+                  Icon(Icons.image),
+                  SizedBox(width: 5),
+                  Text(
+                    'Gallery'.toUpperCase(),
+                  ),
+                ],
               ),
               onPressed: () => _handleImage(context, ImageSource.gallery),
             ),
