@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.dream_cars">
+    package="com.luizjacomn.dream_cars">
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
@@ -10,6 +10,10 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="dream_cars"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyDwce_8SmK_vNXyEO5OBi7ZVaRgLxAa_qo"/>
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

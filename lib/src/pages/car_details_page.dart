@@ -1,6 +1,7 @@
 import 'package:dream_cars/src/db/car_db.dart';
 import 'package:dream_cars/src/model/car.dart';
 import 'package:dream_cars/src/pages/car_form_page.dart';
+import 'package:dream_cars/src/pages/map_page.dart';
 import 'package:dream_cars/src/pages/video_page.dart';
 import 'package:dream_cars/src/services/cars_service.dart';
 import 'package:dream_cars/src/utils/alerts.dart';
@@ -39,15 +40,18 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
       appBar: AppBar(
         title: Text(car.name),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.place),
-            onPressed: () {},
+          Visibility(
+            visible: (car.latitude != null && car.longitude != null),
+            child: IconButton(
+              icon: Icon(Icons.place),
+              onPressed: () => _onMapClick(context),
+            ),
           ),
           Visibility(
             visible: (car.urlVideo != null && car.urlVideo.isNotEmpty),
             child: IconButton(
               icon: Icon(Icons.videocam),
-              onPressed: () => _onClickVideo(context),
+              onPressed: () => _onVideoClick(context),
             ),
           ),
           PopupMenuButton<String>(
@@ -212,7 +216,11 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
     }
   }
 
-  void _onClickVideo(context) {
+  void _onMapClick(context) {
+    push(context, MapPage(car));
+  }
+
+  void _onVideoClick(context) {
     push(context, VideoPage(car));
   }
 }

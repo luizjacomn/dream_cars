@@ -1,3 +1,5 @@
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 class CarType {
   static const String classics = 'classicos';
   static const String sports = 'esportivos';
@@ -14,15 +16,18 @@ class Car {
   String latitude;
   String longitude;
 
-  Car(
-      {this.id,
-        this.name,
-        this.type,
-        this.desc,
-        this.imgUrl,
-        this.urlVideo,
-        this.latitude,
-        this.longitude});
+  Car({
+    this.id,
+    this.name,
+    this.type,
+    this.desc,
+    this.imgUrl,
+    this.urlVideo,
+    this.latitude,
+    this.longitude,
+  });
+
+  LatLng get latlng => LatLng(double.parse(latitude), double.parse(longitude));
 
   factory Car.fromJson(Map<String, dynamic> json) {
     return Car(
@@ -38,17 +43,17 @@ class Car {
   }
 
   Map toMap() {
-    Map<String,dynamic> map = {
+    Map<String, dynamic> map = {
       "nome": name,
       "tipo": type,
       "desc": desc,
       "urlFoto": imgUrl,
     };
-    if(id != null) {
+    if (id != null) {
       map["id"] = id;
     }
     return map;
-}
+  }
 
   @override
   String toString() {

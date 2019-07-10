@@ -1,4 +1,4 @@
-package com.example.dream_cars;
+package com.luizjacomn.dream_cars;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
