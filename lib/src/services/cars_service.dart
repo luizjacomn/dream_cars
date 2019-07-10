@@ -4,12 +4,18 @@ import 'dart:io';
 
 import 'package:dream_cars/src/db/car_db.dart';
 import 'package:dream_cars/src/model/car.dart';
+import 'package:dream_cars/src/utils/check_connectivity.dart';
 import 'package:dream_cars/src/utils/response.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
 
 class CarsService {
   static Future<List<Car>> getCars(String type) async {
+    var connected = await hasConnection();
+    if (!connected) {
+      throw SocketException('No network connection');
+    }
+
     final url = "http://livrowebservices.com.br/rest/carros/tipo/$type";
 
     final response = await http.get(url);
