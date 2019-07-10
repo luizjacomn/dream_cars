@@ -4,6 +4,7 @@ import 'package:dream_cars/src/pages/cars_page.dart';
 import 'package:dream_cars/src/pages/favorites_page.dart';
 import 'package:dream_cars/src/utils/nav.dart';
 import 'package:dream_cars/src/utils/prefs.dart';
+import 'package:dream_cars/src/widgets/drawer_list.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -61,6 +62,7 @@ class _HomePageState extends State<HomePage>
           push(context, CarFormPage());
         },
       ),
+      drawer: DrawerList(),
     );
   }
 }
