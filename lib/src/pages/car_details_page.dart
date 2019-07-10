@@ -1,6 +1,7 @@
 import 'package:dream_cars/src/db/car_db.dart';
 import 'package:dream_cars/src/model/car.dart';
 import 'package:dream_cars/src/pages/car_form_page.dart';
+import 'package:dream_cars/src/pages/video_page.dart';
 import 'package:dream_cars/src/services/cars_service.dart';
 import 'package:dream_cars/src/utils/alerts.dart';
 import 'package:dream_cars/src/utils/nav.dart';
@@ -24,10 +25,10 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
     super.initState();
 
     CarDB.getInstance().exists(car).then((exists) {
-      if(exists) {
+      if (exists) {
         setState(() {
-        isFav = exists;
-      });
+          isFav = exists;
+        });
       }
     });
   }
@@ -42,9 +43,12 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
             icon: Icon(Icons.place),
             onPressed: () {},
           ),
-          IconButton(
-            icon: Icon(Icons.videocam),
-            onPressed: () {},
+          Visibility(
+            visible: (car.urlVideo != null && car.urlVideo.isNotEmpty),
+            child: IconButton(
+              icon: Icon(Icons.videocam),
+              onPressed: () => _onClickVideo(context),
+            ),
           ),
           PopupMenuButton<String>(
             onSelected: (option) {
@@ -206,5 +210,9 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
     } else {
       alert(context, "Error", response.message);
     }
+  }
+
+  void _onClickVideo(context) {
+    push(context, VideoPage(car));
   }
 }

@@ -11,4 +11,6 @@ class Response {
         url = map['url'];
 
   bool isOk() => status == 'OK';
+  
+  bool isError() => status == 'ERROR';
 }

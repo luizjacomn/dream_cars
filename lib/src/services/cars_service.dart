@@ -48,17 +48,25 @@ class CarsService {
   }
 
   static delete(Car car) async {
-    final url = "http://livrowebservices.com.br/rest/carros/${car.id}";
+    try {
+      final url = "http://livrowebservices.com.br/rest/carros/${car.id}";
 
-    final response = await http.delete(url);
+      final response = await http.delete(url);
 
-    final db = CarDB.getInstance();
-    bool exists = await db.exists(car);
-    if (exists) {
-      db.delete(car.id);
+      final db = CarDB.getInstance();
+      var resp = Response.fromJson(json.decode(response.body));
+
+      if (!resp.isError()) {
+        bool exists = await db.exists(car);
+        if (exists) {
+          db.delete(car.id);
+        }
+      }
+
+      return resp;
+    } catch (e) {
+      return Response('Error', e.toString());
     }
-
-    return Response.fromJson(json.decode(response.body));
   }
 
   static Future<Response> upload(File file) async {
