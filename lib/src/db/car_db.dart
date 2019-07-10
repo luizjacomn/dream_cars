@@ -37,13 +37,13 @@ class CarDB {
   void _onCreate(Database db, int newVersion) async {
     await db
         .execute('CREATE TABLE car(id INTEGER PRIMARY KEY, nome TEXT, tipo TEXT, '
-            'desc TEXT, urlFoto TEXT, urlVideo TEXT, lat TEXT, lng TEXT)');
+            'desc TEXT, urlFoto TEXT, urlVideo TEXT, latitude TEXT, longitude TEXT)');
   }
 
   Future<int> save(Car car) async {
     var dbClient = await db;
     final sql =
-        'insert or replace into car (id, nome, tipo, desc, urlFoto, urlVideo, lat, lng) VALUES '
+        'insert or replace into car (id, nome, tipo, desc, urlFoto, urlVideo, latitude, longitude) VALUES '
         '(?, ?, ?, ?, ?, ?, ?, ?)';
     print(sql);
     var id = await dbClient.rawInsert(sql, [
@@ -62,21 +62,21 @@ class CarDB {
   Future<List<Car>> getAll() async {
     final dbClient = await db;
 
-    final mapCars = await dbClient.rawQuery('select * from Car');
+    final mapCars = await dbClient.rawQuery('select * from car');
 
     return mapCars.map<Car>((json) => Car.fromJson(json)).toList();
   }
 
   Future<int> getCount() async {
     final dbClient = await db;
-    final result = await dbClient.rawQuery('select count(*) from Car');
+    final result = await dbClient.rawQuery('select count(*) from car');
     return Sqflite.firstIntValue(result);
   }
 
   Future<Car> getById(int id) async {
     var dbClient = await db;
     final result =
-        await dbClient.rawQuery('select * from Car where id = ?', [id]);
+        await dbClient.rawQuery('select * from car where id = ?', [id]);
 
     if (result.length > 0) {
       return new Car.fromJson(result.first);
@@ -93,7 +93,7 @@ class CarDB {
 
   Future<int> delete(int id) async {
     var dbClient = await db;
-    return await dbClient.rawDelete('delete from Car where id = ?', [id]);
+    return await dbClient.rawDelete('delete from car where id = ?', [id]);
   }
 
   Future close() async {
