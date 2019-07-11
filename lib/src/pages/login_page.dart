@@ -3,6 +3,7 @@ import 'package:dream_cars/src/services/login_service.dart';
 import 'package:dream_cars/src/utils/alerts.dart';
 import 'package:dream_cars/src/utils/nav.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -73,42 +74,51 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: () => _onClickLogin(context),
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  String _validateUser(String text) {
-    if (text.isEmpty) return 'User field is required';
-    if (text.length < 2) return 'User field length should be greater than 2';
-    return null;
-  }
-
-  String _validatePassword(String text) {
-    if (text.isEmpty) return 'Password field is required';
-    if (text.length < 3)
-      return 'Password field length should be greater than 3';
-    return null;
-  }
-
-  Future _onClickLogin(BuildContext context) async {
-    if (!_formKey.currentState.validate()) return;
-
-    setState(() {
-      _progress = true;
-    });
-
-    final response = await LoginService.login(
-        _userController.text, _passwordController.text);
-
-    if (response.isOk()) {
-      print(response.message);
-      pushReplacement(context, HomePage());
-    } else {
-      alert(context, 'Error', response.message);
-      setState(() {
-        _progress = false;
-      });
-    }
-  }
+          Container(
+            margin: const EdgeInsets.only(top: 20),
+            height: 50,
+            child: GoogleSignInButton(onPressed: () => _onClickGoogleLogin(context),),
+                      ),
+                    ],
+                  ),
+                );
+              }
+            
+              String _validateUser(String text) {
+                if (text.isEmpty) return 'User field is required';
+                if (text.length < 2) return 'User field length should be greater than 2';
+                return null;
+              }
+            
+              String _validatePassword(String text) {
+                if (text.isEmpty) return 'Password field is required';
+                if (text.length < 3)
+                  return 'Password field length should be greater than 3';
+                return null;
+              }
+            
+              Future _onClickLogin(BuildContext context) async {
+                if (!_formKey.currentState.validate()) return;
+            
+                setState(() {
+                  _progress = true;
+                });
+            
+                final response = await LoginService.login(
+                    _userController.text, _passwordController.text);
+            
+                if (response.isOk()) {
+                  print(response.message);
+                  pushReplacement(context, HomePage());
+                } else {
+                  alert(context, 'Error', response.message);
+                  setState(() {
+                    _progress = false;
+                  });
+                }
+              }
+            
+              _onClickGoogleLogin(BuildContext context) {
+                
+              }
 }

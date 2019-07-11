@@ -26,6 +26,7 @@ class _CarsPageState extends State<CarsPage>
   @override
   void initState() {
     super.initState();
+    
     _bloc.fetch(type);
   }
 
@@ -35,8 +36,8 @@ class _CarsPageState extends State<CarsPage>
 
   @override
   void dispose() {
-    _bloc.close();
     super.dispose();
+    _bloc.close();
   }
 
   @override

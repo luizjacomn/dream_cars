@@ -13,9 +13,9 @@ class FavoritesPage extends StatelessWidget {
       child: FutureBuilder<List<Car>>(
         future: future,
         builder: (context, snapshot) {
-          if (!snapshot.hasData)
+          if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
-          if (snapshot.hasError)
+          } else if (snapshot.hasError) {
             return Center(
                 child: Text(
               'Erro ao buscar dados.',
@@ -24,7 +24,7 @@ class FavoritesPage extends StatelessWidget {
                 fontSize: 20,
               ),
             ));
-          if (snapshot.hasData) {
+          } else {
             return CarsListView(snapshot.data);
           }
         },
